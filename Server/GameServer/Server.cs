@@ -8,13 +8,31 @@ namespace GameServer
 {
 	class Server
 	{
-		public static int MaxPlayers { get; private set; }
-		public static int Port { get; private set; }
-		public static Dictionary<int, Client> clients = new Dictionary<int, Client>();
+		#region Singleton
+		private static Server _instance;
+		public static Server Instance
+		{
+			get
+			{
+				if (_instance is null)
+				{
+					_instance = new Server();
+				}
 
-		private static TcpListener tcpListener;
+				return _instance;
+			}
+		}
 
-		public static void Start(int _maxPlayers, int _port)
+		private Server() { }
+		#endregion
+
+		public int MaxPlayers { get; private set; }
+		public int Port { get; private set; }
+		public Dictionary<int, Client> clients = new Dictionary<int, Client>();
+
+		private TcpListener tcpListener;
+
+		public void Start(int _maxPlayers, int _port)
 		{
 			MaxPlayers = _maxPlayers;
 			Port = _port;
@@ -29,7 +47,7 @@ namespace GameServer
 			Console.WriteLine($"Server started on {Port}.");
 		}
 
-		private static void TCPConnectCallback(IAsyncResult _result)
+		private void TCPConnectCallback(IAsyncResult _result)
 		{
 			TcpClient _client = tcpListener.EndAcceptTcpClient(_result);
 			tcpListener.BeginAcceptTcpClient(new AsyncCallback(TCPConnectCallback), null);
@@ -47,7 +65,7 @@ namespace GameServer
 			Console.WriteLine($"{_client.Client.RemoteEndPoint} failed to connect: Server full!");
 		}
 
-		private static void InitializeServerData()
+		private void InitializeServerData()
 		{
 			for (int i = 1; i <= MaxPlayers; i++)
 			{
