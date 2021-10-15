@@ -6,26 +6,29 @@ namespace GameServer
 {
 	class ServerHandle
 	{
-		public static void WelcomeReceived(int _fromClient, Packet _packet)
+		public static void WelcomeReceived(int fromClient, Packet packet)
 		{
-			int _clientIdCheck = _packet.ReadInt();
-			string _username = _packet.ReadString();
+			int clientIdCheck = packet.ReadInt();
+			string username = packet.ReadString();
 
-			Console.WriteLine($"{Server.Instance.clients[_fromClient].tcp.socket.Client.RemoteEndPoint} connected successfully and is now player {_fromClient}.");
+			Console.WriteLine(
+				$"{Server.Instance.clients[fromClient].tcp.socket.Client.RemoteEndPoint} connected successfully and is now player {fromClient}" +
+				$" with the nickname {username}"
+			);
 
-			if (_fromClient != _clientIdCheck)
+			if (fromClient != clientIdCheck)
 			{
-				Console.WriteLine($"Player \"{_username}\" (ID: {_fromClient}) has assumed the wrong client ID ({_clientIdCheck})!");
+				Console.WriteLine($"Player \"{username}\" (ID: {fromClient}) has assumed the wrong client ID ({clientIdCheck})!");
 			}
 
 			// TODO: Send player into game
 		}
 
-		public static void UDPTestReceived(int _fromClient, Packet _packet)
+		public static void UDPTestReceived(int fromClient, Packet packet)
 		{
-			string _msg = _packet.ReadString();
+			string msg = packet.ReadString();
 
-			Console.WriteLine($"Received packet via UDP. Contains message: {_msg}");
+			Console.WriteLine($"Received packet via UDP. Contains message: {msg}");
 		}
 	}
 }

@@ -5,13 +5,13 @@ using UnityEngine;
 
 public class ClientHandle : MonoBehaviour
 {
-    public static void Welcome(Packet _packet)
+    public static void Welcome(Packet packet)
 	{
-		string _msg = _packet.ReadString();
-		int _myId = _packet.ReadInt();
+		string msg = packet.ReadString();
+		int myId = packet.ReadInt();
 
-		Debug.Log($"Message from server: {_msg}");
-		Client.instance.myId = _myId;
+		Debug.Log($"Message from server: {msg}");
+		Client.instance.myId = myId;
 		ClientSend.WelcomeReceived();
 
 		Client.instance.udp.Connect(
@@ -19,11 +19,11 @@ public class ClientHandle : MonoBehaviour
 		);
 	}
 
-	public static void UDPTest(Packet _packet)
+	public static void UDPTest(Packet packet)
 	{
-		string _msg = _packet.ReadString();
+		string msg = packet.ReadString();
 
-		Debug.Log($"Received packet via UDP. Contains message: {_msg}");
+		Debug.Log($"Received packet via UDP. Contains message: {msg}");
 		ClientSend.UDPTestReceived();
 	}
 }

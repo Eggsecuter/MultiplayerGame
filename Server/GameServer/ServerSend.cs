@@ -24,83 +24,83 @@ namespace GameServer
 		private ServerSend() { }
 		#endregion
 
-		private void SendTCPData(int _toClient, Packet _packet)
+		private void SendTCPData(int toClient, Packet packet)
 		{
-			_packet.WriteLength();
-			Server.Instance.clients[_toClient].tcp.SendData(_packet);
+			packet.WriteLength();
+			Server.Instance.clients[toClient].tcp.SendData(packet);
 		}
 
-		private void SendUDPData(int _toClient, Packet _packet)
+		private void SendUDPData(int toClient, Packet packet)
 		{
-			_packet.WriteLength();
-			Server.Instance.clients[_toClient].udp.SendData(_packet);
+			packet.WriteLength();
+			Server.Instance.clients[toClient].udp.SendData(packet);
 		}
 
-		private void BroadcastTCPData(Packet _packet)
+		private void BroadcastTCPData(Packet packet)
 		{
-			_packet.WriteLength();
+			packet.WriteLength();
 			
 			for (int i = 1; i <= Server.Instance.MaxPlayers; i++)
 			{
-				Server.Instance.clients[i].tcp.SendData(_packet);
+				Server.Instance.clients[i].tcp.SendData(packet);
 			}
 		}
 
-		private void BroadcastTCPData(Packet _packet, int _exeptClient)
+		private void BroadcastTCPData(Packet packet, int exeptClient)
 		{
-			_packet.WriteLength();
+			packet.WriteLength();
 
 			for (int i = 1; i <= Server.Instance.MaxPlayers; i++)
 			{
-				if (i != _exeptClient)
+				if (i != exeptClient)
 				{
-					Server.Instance.clients[i].tcp.SendData(_packet);
+					Server.Instance.clients[i].tcp.SendData(packet);
 				}
 			}
 		}
 
-		private void BroadcastUDPData(Packet _packet)
+		private void BroadcastUDPData(Packet packet)
 		{
-			_packet.WriteLength();
+			packet.WriteLength();
 
 			for (int i = 1; i <= Server.Instance.MaxPlayers; i++)
 			{
-				Server.Instance.clients[i].udp.SendData(_packet);
+				Server.Instance.clients[i].udp.SendData(packet);
 			}
 		}
 
-		private void BroadcastUDPData(Packet _packet, int _exeptClient)
+		private void BroadcastUDPData(Packet packet, int exeptClient)
 		{
-			_packet.WriteLength();
+			packet.WriteLength();
 
 			for (int i = 1; i <= Server.Instance.MaxPlayers; i++)
 			{
-				if (i != _exeptClient)
+				if (i != exeptClient)
 				{
-					Server.Instance.clients[i].udp.SendData(_packet);
+					Server.Instance.clients[i].udp.SendData(packet);
 				}
 			}
 		}
 
 		#region Packets
-		public void Welcome(int _toClient, string _msg)
+		public void Welcome(int toClient, string msg)
 		{
-			using (Packet _packet = new Packet((int)ServerPackets.welcome))
+			using (Packet packet = new Packet((int)ServerPackets.welcome))
 			{
-				_packet.Write(_msg);
-				_packet.Write(_toClient);
+				packet.Write(msg);
+				packet.Write(toClient);
 
-				SendTCPData(_toClient, _packet);
+				SendTCPData(toClient, packet);
 			}
 		}
 
-		public void UDPTest(int _toClient)
+		public void UDPTest(int toClient)
 		{
-			using (Packet _packet = new Packet((int)ServerPackets.udpTest))
+			using (Packet packet = new Packet((int)ServerPackets.udpTest))
 			{
-				_packet.Write("A test packet for UDP.");
+				packet.Write("A test packet for UDP.");
 
-				SendUDPData(_toClient, _packet);
+				SendUDPData(toClient, packet);
 			}
 		}
 		#endregion
