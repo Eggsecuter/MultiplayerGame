@@ -34,11 +34,12 @@ public class GameManager : MonoBehaviour
 		else
 		{
 			player = Instantiate(playerPrefab, position, rotation);
+
+			player.GetComponent<PlayerNameTag>().nameTagText.text = username;
 		}
 
 		var playerManager = player.GetComponent<PlayerManager>();
-		playerManager.id = id;
-		playerManager.username = username;
+		playerManager.Initialize(id, username);
 
 		players.Add(id, playerManager);
 	}

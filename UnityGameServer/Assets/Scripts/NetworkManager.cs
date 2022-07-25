@@ -7,6 +7,7 @@ public class NetworkManager : MonoBehaviour
 	public static NetworkManager instance;
 
 	public GameObject playerPrefab;
+	public int port;
 
 	private void Awake()
 	{
@@ -25,7 +26,7 @@ public class NetworkManager : MonoBehaviour
 		QualitySettings.vSyncCount = 0;
 		Application.targetFrameRate = 30;
 
-		Server.Instance.Start(50, 26950);
+		Server.Instance.Start(50, port);
 	}
 
 	private void OnApplicationQuit()

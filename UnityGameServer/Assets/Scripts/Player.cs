@@ -8,9 +8,12 @@ public class Player : MonoBehaviour
 	public string username;
 	[HideInInspector]
 	public CharacterController controller;
+	public Transform shootOrigin;
 	public float gravity = -9.81f;
 	public float moveSpeed = 5f;
 	public float jumpSpeed = 5f;
+	public float health;
+	public float maxHealth = 100f;
 
 	private bool[] inputs;
 	private float yVelocity = 0;
@@ -27,12 +30,18 @@ public class Player : MonoBehaviour
 	{
 		this.id = id;
 		this.username = username;
+		health = maxHealth;
 
 		inputs = new bool[5];
 	}
 
 	public void FixedUpdate()
 	{
+		if (health <= 0f)
+		{
+			return;
+		}
+
 		Vector2 inputDirection = Vector2.zero;
 
 		if (inputs[0])
@@ -83,5 +92,46 @@ public class Player : MonoBehaviour
 	{
 		this.inputs = inputs;
 		transform.rotation = rotation;
+	}
+
+	public void Shoot(Vector3 viewDirection)
+	{
+		if (Physics.Raycast(shootOrigin.position, viewDirection, out RaycastHit hit, 25f))
+		{
+			if (hit.collider.CompareTag("Player"))
+			{
+				hit.collider.GetComponent<Player>().TakeDamage(50f);
+			}
+		}
+	}
+
+	public void TakeDamage(float damage)
+	{
+		if (health <= 0f)
+		{
+			return;
+		}
+
+		health -= damage;
+
+		if (health <= 0f)
+		{
+			health = 0f;
+			controller.enabled = false;
+			transform.position = new Vector3(0f, 25f, 0f);
+			ServerSend.Instance.PlayerPosition(this);
+			StartCoroutine(Respawn());
+		}
+
+		ServerSend.Instance.PlayerHealth(this);
+	}
+
+	private IEnumerator Respawn()
+	{
+		yield return new WaitForSeconds(5f);
+
+		health = maxHealth;
+		controller.enabled = true;
+		ServerSend.Instance.PlayerRespawned(this);
 	}
 }

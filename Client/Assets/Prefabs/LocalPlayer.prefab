@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5476885085390191395}
   m_Layer: 0
   m_Name: FirstPersonCamera
-  m_TagString: Untagged
+  m_TagString: LocalPlayerCam
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -208,7 +208,7 @@ GameObject:
   - component: {fileID: 4542952033296359601}
   m_Layer: 0
   m_Name: LocalPlayer
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -243,6 +243,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 0
   username: 
+  health: 0
+  maxHealth: 100
+  model: {fileID: 1075520658850941175}
 --- !u!114 &4542952033296359601
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -255,3 +258,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aae3ed46607d89f49b9abc1a6dcd3620, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cam: {fileID: 5345823899009985706, guid: 2846aa74cf9ee024ca0e7865868f3fb1, type: 3}

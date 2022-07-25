@@ -4,7 +4,17 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-	void FixedUpdate()
+	public Transform cam;
+
+	private void Update()
+	{
+		if (Input.GetKeyDown(KeyCode.Mouse0))
+		{
+			ClientSend.PlayerShoot(cam.forward);
+		}
+	}
+
+	private void FixedUpdate()
 	{
 		SendInputToServer();
 	}

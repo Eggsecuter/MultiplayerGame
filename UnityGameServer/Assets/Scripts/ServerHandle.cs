@@ -35,4 +35,11 @@ public class ServerHandle
 
 		Server.Instance.clients[fromClient].player.SetInput(inputs, rotation);
 	}
+
+	public static void PlayerShoot(int fromClient, Packet packet)
+	{
+		Vector3 shootDirection = packet.ReadVector3();
+
+		Server.Instance.clients[fromClient].player.Shoot(shootDirection);
+	}
 }

@@ -125,5 +125,36 @@ public class ServerSend
 			BroadcastUDPData(packet, player.id);
 		}
 	}
+
+	public void PlayerDisconnected(int playerId)
+	{
+		using (Packet packet = new Packet((int)ServerPackets.playerDisconnected))
+		{
+			packet.Write(playerId);
+
+			BroadcastTCPData(packet);
+		}
+	}
+
+	public void PlayerHealth(Player player)
+	{
+		using (Packet packet = new Packet((int)ServerPackets.playerHealth))
+		{
+			packet.Write(player.id);
+			packet.Write(player.health);
+
+			BroadcastTCPData(packet);
+		}
+	}
+
+	public void PlayerRespawned(Player player)
+	{
+		using (Packet packet = new Packet((int)ServerPackets.playerRespawned))
+		{
+			packet.Write(player.id);
+
+			BroadcastTCPData(packet);
+		}
+	}
 	#endregion
 }

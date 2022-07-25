@@ -226,5 +226,7 @@ public class Client
 
         tcp.Disconnect();
         udp.Disconnect();
+
+        ServerSend.Instance.PlayerDisconnected(id);
     }
 }
